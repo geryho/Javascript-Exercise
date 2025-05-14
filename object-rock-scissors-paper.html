@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const count = {
+        player: 0,
+        computer: 0,
+        draw: 0,
+      };
+
+      function computerMove() {
+        const moves = ["Rock", "Paper", "Scissors"];
+        const randomInt = Math.floor(Math.random() * 3);
+
+        if (randomInt === 0) {
+          return "Rock";
+        } else if (randomInt === 1) {
+          return "Paper";
+        } else {
+          return "Scissors";
+        }
+      }
+
+      function playGame(playerChoice) {
+        const computerChoice = computerMove();
+
+        if (playerChoice === "Rock") {
+          if (computerChoice === "Rock") {
+            count.draw++;
+            alert(
+              `You picked Rock, Computer picked Rock, Draw!, Computer win : ${count.computer} - Player win : ${count.player} - draw : ${count.draw}`
+            );
+          } else if (computerChoice === "Paper") {
+            count.computer++;
+            alert(
+              `You picked Rock, Computer picked Paper, Computer wins!, Computer win : ${count.computer} - Player win : ${count.player} - draw : ${count.draw}`
+            );
+          } else {
+            count.player++;
+            alert(
+              `You picked Rock, Computer picked Scissors, Player wins!, Computer win : ${count.computer} - Player win : ${count.player} - draw : ${count.draw}`
+            );
+          }
+        }
+
+        if (playerChoice === "Paper") {
+          if (computerChoice === "Paper") {
+            count.draw++;
+            alert(
+              `You picked Paper, Computer picked Paper, Draw!, Computer win : ${count.computer} - Player win : ${count.player} - draw : ${count.draw}`
+            );
+          } else if (computerChoice === "Scissors") {
+            count.computer++;
+            alert(
+              `You picked Paper, Computer picked Scissors, Computer wins!, Computer win : ${count.computer} - Player win : ${count.player} - draw : ${count.draw}`
+            );
+          } else {
+            count.player++;
+            alert(
+              `You picked Paper, Computer picked Rock, Player wins!, Computer win : ${count.computer} - Player win : ${count.player} - draw : ${count.draw}`
+            );
+          }
+        }
+
+        if (playerChoice === "Scissors") {
+          if (computerChoice === "Scissors") {
+            count.draw++;
+            alert(
+              `You picked Scissors, Computer picked Scissors, Draw!, Computer win : ${count.computer} - Player win : ${count.player} - draw : ${count.draw}`
+            );
+          } else if (computerChoice === "Rock") {
+            count.computer++;
+            alert(
+              `You picked Scissors, Computer picked Rock, Computer wins!, Computer win : ${count.computer} - Player win : ${count.player} - draw : ${count.draw}`
+            );
+          } else {
+            count.player++;
+            alert(
+              `You picked Scissors, Computer picked Paper, Player wins!, Computer win : ${count.computer} - Player win : ${count.player} - draw : ${count.draw}`
+            );
+          }
+        }
+      }
+
+      function reset() {
+        count.player = 0;
+        count.computer = 0;
+        count.draw = 0;
+        alert(`Score reset! ${count.computer} - ${count.player}`);
+      }
+    </script>
+
+    <h1>Rock Paper Scissors</h1>
+    <button onclick="playGame('Rock');">Rock</button>
+    <button onclick="playGame('Paper');">Paper</button>
+    <button onclick="playGame('Scissors');">Scissors</button>
+    <button onclick="reset();">Reset</button>
+  </body>
+</html>

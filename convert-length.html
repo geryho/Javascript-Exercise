@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Convert Length</title>
+  </head>
+  <body>
+    <script>
+      function convertLength(length, from, to) {
+        if (from === "mil" && to === "km") {
+          return console.log(
+            `${length}, ${from}, ${to} is ${length * 1.60934}`
+          );
+        } else if (from === "km" && to === "mil") {
+          return console.log(
+            `${length}, ${from}, ${to} is ${length / 1.60934}`
+          );
+        } else if (from === "mil" && to === "ft") {
+          return console.log(`${length}, ${from}, ${to} is ${length * 5280}`);
+        } else if (from === "ft" && to === "mil") {
+          return console.log(`${length}, ${from}, ${to} is ${length / 5280}`);
+        } else if (from === "km" && to === "ft") {
+          return console.log(
+            `${length}, ${from}, ${to} is ${length * 3280.84}`
+          );
+        } else if (from === "ft" && to === "km") {
+          return console.log(
+            `${length}, ${from}, ${to} is ${length / 3280.84}`
+          );
+        } else {
+          return console.log(
+            `converted length (${length}, ${from}, ${to}) is invalid conversion`
+          );
+        }
+      }
+
+      convertLength(1, "mil", "ft");
+      convertLength(5, "mil", "km");
+      convertLength(5, "mil", "ft");
+      convertLength(5, "km", "ft");
+    </script>
+  </body>
+</html>
