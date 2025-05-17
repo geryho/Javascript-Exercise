@@ -7,91 +7,106 @@
   </head>
   <body>
     <script>
-      const count = {
+      const count = JSON.parse(localStorage.getItem("count")) || {
         player: 0,
         computer: 0,
         draw: 0,
       };
 
-      function computerMove() {
-        const moves = ["Rock", "Paper", "Scissors"];
-        const randomInt = Math.floor(Math.random() * 3);
-
-        if (randomInt === 0) {
+      function reset() {
+        count.player = 0;
+        count.computer = 0;
+        count.draw = 0;
+        localStorage.setItem("count", JSON.stringify(count));
+        alert(
+          `Player : ${count.player} - Computer : ${count.computer} - Draw : ${count.draw}`
+        );
+      }
+      function computerSelect() {
+        const computerChoice = Math.floor(Math.random() * 3);
+        if (computerChoice === 0) {
           return "Rock";
-        } else if (randomInt === 1) {
+        } else if (computerChoice === 1) {
           return "Paper";
         } else {
           return "Scissors";
         }
       }
-
-      function playGame(playerChoice) {
-        const computerChoice = computerMove();
-
-        if (playerChoice === "Rock") {
-          if (computerChoice === "Rock") {
+      function playGame(playerMove) {
+        const computerMove = computerSelect();
+        if (playerMove === "Rock") {
+          if (computerMove === "Rock") {
             count.draw++;
             alert(
-              `You picked Rock, Computer picked Rock, Draw!, Computer win : ${count.computer} - Player win : ${count.player} - draw : ${count.draw}`
+              `Player picked ${playerMove}, Computer picked ${computerMove},
+Draw!
+Player : ${count.player} - Computer : ${count.computer} - Draw : ${count.draw}`
             );
-          } else if (computerChoice === "Paper") {
+          } else if (computerMove === "Paper") {
             count.computer++;
             alert(
-              `You picked Rock, Computer picked Paper, Computer wins!, Computer win : ${count.computer} - Player win : ${count.player} - draw : ${count.draw}`
+              `Player picked ${playerMove}, Computer picked ${computerMove},
+Computer Win!
+Player : ${count.player} - Computer : ${count.computer} - Draw : ${count.draw}`
             );
           } else {
             count.player++;
             alert(
-              `You picked Rock, Computer picked Scissors, Player wins!, Computer win : ${count.computer} - Player win : ${count.player} - draw : ${count.draw}`
+              `Player picked ${playerMove}, Computer picked ${computerMove},
+Player Win!
+Player : ${count.player} - Computer : ${count.computer} - Draw : ${count.draw}`
             );
           }
         }
-
-        if (playerChoice === "Paper") {
-          if (computerChoice === "Paper") {
+        if (playerMove === "Paper") {
+          if (computerMove === "Paper") {
             count.draw++;
             alert(
-              `You picked Paper, Computer picked Paper, Draw!, Computer win : ${count.computer} - Player win : ${count.player} - draw : ${count.draw}`
+              `Player picked ${playerMove}, Computer picked ${computerMove},
+Draw!
+Player : ${count.player} - Computer : ${count.computer} - Draw : ${count.draw}`
             );
-          } else if (computerChoice === "Scissors") {
+          } else if (computerMove === "Scissors") {
             count.computer++;
             alert(
-              `You picked Paper, Computer picked Scissors, Computer wins!, Computer win : ${count.computer} - Player win : ${count.player} - draw : ${count.draw}`
+              `Player picked ${playerMove}, Computer picked ${computerMove},
+Computer Win!
+Player : ${count.player} - Computer : ${count.computer} - Draw : ${count.draw}`
             );
           } else {
             count.player++;
             alert(
-              `You picked Paper, Computer picked Rock, Player wins!, Computer win : ${count.computer} - Player win : ${count.player} - draw : ${count.draw}`
+              `Player picked ${playerMove}, Computer picked ${computerMove},
+Player Win!
+Player : ${count.player} - Computer : ${count.computer} - Draw : ${count.draw}`
             );
           }
         }
-
-        if (playerChoice === "Scissors") {
-          if (computerChoice === "Scissors") {
+        if (playerMove === "Scissors") {
+          if (computerMove === "Scissors") {
             count.draw++;
             alert(
-              `You picked Scissors, Computer picked Scissors, Draw!, Computer win : ${count.computer} - Player win : ${count.player} - draw : ${count.draw}`
+              `Player picked ${playerMove}, Computer picked ${computerMove},
+Draw!
+Player : ${count.player} - Computer : ${count.computer} - Draw : ${count.draw}`
             );
-          } else if (computerChoice === "Rock") {
+          } else if (computerMove === "Rock") {
             count.computer++;
             alert(
-              `You picked Scissors, Computer picked Rock, Computer wins!, Computer win : ${count.computer} - Player win : ${count.player} - draw : ${count.draw}`
+              `Player picked ${playerMove}, Computer picked ${computerMove},
+Computer Win!
+Player : ${count.player} - Computer : ${count.computer} - Draw : ${count.draw}`
             );
           } else {
             count.player++;
             alert(
-              `You picked Scissors, Computer picked Paper, Player wins!, Computer win : ${count.computer} - Player win : ${count.player} - draw : ${count.draw}`
+              `Player picked ${playerMove}, Computer picked ${computerMove},
+Player Win!
+Player : ${count.player} - Computer : ${count.computer} - Draw : ${count.draw}`
             );
           }
         }
-      }
-
-      function reset() {
-        count.player = 0;
-        count.computer = 0;
-        count.draw = 0;
-        alert(`Score reset! ${count.computer} - ${count.player}`);
+        localStorage.setItem("count", JSON.stringify(count));
       }
     </script>
 
