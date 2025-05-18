@@ -47,6 +47,7 @@
       }
       function playGame(playerMove) {
         const computerMove = computerSelect();
+        let status = "";
         const result = {
           Rock: { Scissors: 1, Paper: 0 },
           Paper: { Rock: 1, Scissors: 0 },
