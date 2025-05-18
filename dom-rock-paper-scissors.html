@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM Rock Paper Scissors</title>
+  </head>
+  <body>
+    <h1>Rock Paper Scissors</h1>
+    <button onclick="playGame('Rock');" class="Rock">Rock</button>
+    <button onclick="playGame('Paper');" class="Paper">Paper</button>
+    <button onclick="playGame('Scissors');" class="Scissors">Scissors</button>
+    <p class="js-choice"></p>
+    <p class="js-status"></p>
+    <p class="js-score"></p>
+    <button onclick="reset();" class="Reset">Reset</button>
+
+    <script>
+      const count = JSON.parse(localStorage.getItem("count")) || {
+        player: 0,
+        computer: 0,
+        draw: 0,
+      };
+      document.querySelector(
+        ".js-score"
+      ).innerText = `Player = ${count.player} - Computer = ${count.computer} - Draw = ${count.draw}`;
+
+      function reset() {
+        count.player = 0;
+        count.computer = 0;
+        count.draw = 0;
+        localStorage.removeItem(count);
+        localStorage.setItem("count", JSON.stringify(count));
+        document.querySelector(
+          ".js-score"
+        ).innerText = `Player = ${count.player} - Computer = ${count.computer} - Draw = ${count.draw}`;
+      }
+      function computerSelect() {
+        const computerChoice = Math.floor(Math.random() * 3);
+        if (computerChoice === 0) {
+          return "Rock";
+        } else if (computerChoice === 1) {
+          return "Paper";
+        } else {
+          return "Scissors";
+        }
+      }
+      function playGame(playerMove) {
+        const computerMove = computerSelect();
+        const result = {
+          Rock: { Scissors: 1, Paper: 0 },
+          Paper: { Rock: 1, Scissors: 0 },
+          Scissors: { Paper: 1, Rock: 0 },
+        };
+        const result2 = result[playerMove]?.[computerMove];
+        if (playerMove === computerMove) {
+          count.draw++;
+          status = "Draw";
+        } else if (result2 === 1) {
+          count.player++;
+          status = "You Win";
+        } else {
+          count.computer++;
+          status = "Computer Win";
+        }
+        function getScore() {
+          document.querySelector(
+            ".js-score"
+          ).innerText = `Player = ${count.player} - Computer = ${count.computer} - Draw = ${count.draw}`;
+        }
+        function getStatus() {
+          document.querySelector(".js-status").innerText = `${status}`;
+        }
+        function getChoice() {
+          document.querySelector(
+            ".js-choice"
+          ).innerText = `You picked ${playerMove}, Computer picked ${computerMove}`;
+        }
+        localStorage.setItem("count", JSON.stringify(count));
+        getChoice();
+        getStatus();
+        getScore();
+      }
+    </script>
+  </body>
+</html>
