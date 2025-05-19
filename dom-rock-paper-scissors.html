@@ -21,19 +21,26 @@
         computer: 0,
         draw: 0,
       };
-      document.querySelector(
-        ".js-score"
-      ).innerText = `Player = ${count.player} - Computer = ${count.computer} - Draw = ${count.draw}`;
-
+      function getScore() {
+        document.querySelector(
+          ".js-score"
+        ).innerText = `Player = ${count.player} - Computer = ${count.computer} - Draw = ${count.draw}`;
+      }
+      function getStatus(status) {
+        document.querySelector(".js-status").innerText = `${status}`;
+      }
+      function getChoice(playerMove, computerMove) {
+        document.querySelector(
+          ".js-choice"
+        ).innerText = `You picked ${playerMove}, Computer picked ${computerMove}`;
+      }
       function reset() {
         count.player = 0;
         count.computer = 0;
         count.draw = 0;
-        localStorage.removeItem(count);
+        localStorage.removeItem("count");
         localStorage.setItem("count", JSON.stringify(count));
-        document.querySelector(
-          ".js-score"
-        ).innerText = `Player = ${count.player} - Computer = ${count.computer} - Draw = ${count.draw}`;
+        getScore();
       }
       function computerSelect() {
         const computerChoice = Math.floor(Math.random() * 3);
@@ -64,22 +71,9 @@
           count.computer++;
           status = "Computer Win";
         }
-        function getScore() {
-          document.querySelector(
-            ".js-score"
-          ).innerText = `Player = ${count.player} - Computer = ${count.computer} - Draw = ${count.draw}`;
-        }
-        function getStatus() {
-          document.querySelector(".js-status").innerText = `${status}`;
-        }
-        function getChoice() {
-          document.querySelector(
-            ".js-choice"
-          ).innerText = `You picked ${playerMove}, Computer picked ${computerMove}`;
-        }
         localStorage.setItem("count", JSON.stringify(count));
-        getChoice();
-        getStatus();
+        getChoice(playerMove, computerMove);
+        getStatus(status);
         getScore();
       }
     </script>
