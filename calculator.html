@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+  </head>
+  <style>
+    body {
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 px 4px 8px rgba(0, 0, 0, 0.2);
+      width: 400px;
+      height: 500px;
+      background-color: aqua;
+    }
+    h1 {
+      text-align: center;
+      background-color: rgb(255, 253, 253);
+    }
+
+    .display {
+      width: 75%;
+      padding: 15px;
+      font-size: 30px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .btn-group {
+      justify-content: center;
+      margin-top: 25px;
+    }
+    .btn-group button {
+      width: 70px;
+      height: 70px;
+      font-size: 20px;
+      margin: 5px;
+      border-radius: 5px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+  <body>
+    <script>
+      const display = document.querySelector(".display");
+      function number(num) {
+        display.innerText = number;
+      }
+    </script>
+
+    <div class="container">
+      <h1>Calculator</h1>
+      <input size="10" class="display" maxlength="10" />
+      <div class="btn-group">
+        <button class="btn1" onclick="number(1);">1</button>
+        <button class="btn2" onclick="">2</button>
+        <button class="btn3" onclick="">3</button>
+        <button class="btn+" onclick="">+</button>
+        <br />
+        <button class="btn4" onclick="">4</button>
+        <button class="btn5" onclick="">5</button>
+        <button class="btn6" onclick="">6</button>
+        <button class="btn-" onclick="">-</button>
+        <br />
+        <button class="btn7" onclick="">7</button>
+        <button class="btn8" onclick="">8</button>
+        <button class="btn9" onclick="">9</button>
+        <button class="btn*" onclick="">*</button>
+        <br />
+        <button class="btn0" onclick="">0</button>
+        <button class="btnC" onclick="">C</button>
+        <button class="btn=" onclick="">=</button>
+        <button class="btn/" onclick="">/</button>
+      </div>
+    </div>
+  </body>
+</html>
