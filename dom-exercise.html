@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM Exercise</title>
+  </head>
+  <body>
+    <button class="a">9a</button>
+    <button class="b">9b</button>
+    <button
+      onclick="document.querySelector('.js-choice').innerText ='You choose heads';"
+    >
+      heads
+    </button>
+    <button
+      onclick="document.querySelector('.js-choice').innerText ='You choose tails';"
+    >
+      tails
+    </button>
+    <p class="js-choice"></p>
+    <input placeholder="Submit Your Name" onkeydown="isEnter(event)" class="js-name"></input>
+    <button class="js-submit" onclick="submit()">Submit</button>
+    <p class="js-display-name"></p>
+    <input placeholder="type something" class="js-input-text" onkeyup="isTyping()"></input>
+    <p class="js-display-text"></p>
+    <script>
+      console.log(document.querySelector(".a"));
+      document.querySelector(".b").innerText = "9b done!";
+
+      submit = () => {
+        const nameInput = document.querySelector(".js-name");
+        const name = nameInput.value;
+        document.querySelector(".js-display-name").innerText = `Hello ${name}`;
+      }
+      
+      function isEnter(event){
+        if (event.key === "Enter") {
+          submit();
+        }
+      }
+
+      function isTyping(event) {
+        const inputText = document.querySelector(".js-input-text");
+        const text = inputText.value;
+        document.querySelector(".js-display-text").innerText = `${text}`;
+      }
+    </script>
+  </body>
+</html>

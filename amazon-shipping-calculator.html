@@ -17,6 +17,7 @@
     <button onclick="calculateTotal();" class="calculate">Calculate</button>
     <p class="js-total-cost"></p>
     <script>
+      window.document;
       function handleCost(event) {
         if (event.key === "Enter") {
           calculateTotal();
@@ -24,7 +25,7 @@
       }
       function calculateTotal() {
         const inputCost = document.querySelector(".js-cost-input");
-        let cost = Number(inputCost.value);
+        let cost = Math.round(Number(inputCost.value));
         if (cost < 40) {
           cost = cost + 10;
         }
