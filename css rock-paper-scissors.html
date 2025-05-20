@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM Rock Paper Scissors</title>
+    <style>
+      body {
+        background-color: rgb(25, 25, 25);
+        color: white;
+        font-family: Arial;
+      }
+      .title {
+        font-size: 30px;
+        font-weight: bold;
+      }
+      .move-icon {
+        height: 50px;
+      }
+      .move-button {
+        background-color: transparent;
+        border: 3px solid white;
+        border-radius: 50%;
+        height: 120px;
+        width: 120px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="title">Rock Paper Scissors</h1>
+    <button onclick="playGame('Rock');" class="move-button">
+      <img src="img/rock-emoji.png" class="move-icon" />
+    </button>
+    <button onclick="playGame('Paper');" class="move-button">
+      <img src="img/paper-emoji.png" class="move-icon" />
+    </button>
+    <button onclick="playGame('Scissors');" class="move-button">
+      <img src="img/scissors-emoji.png" class="move-icon" />
+    </button>
+    <p class="js-choice"></p>
+    <p class="js-status"></p>
+    <p class="js-score"></p>
+    <button onclick="reset();" class="Reset">Reset</button>
+
+    <script>
+      const count = JSON.parse(localStorage.getItem("count")) || {
+        player: 0,
+        computer: 0,
+        draw: 0,
+      };
+      function getScore() {
+        document.querySelector(
+          ".js-score"
+        ).innerText = `Player = ${count.player} - Computer = ${count.computer} - Draw = ${count.draw}`;
+      }
+      function getStatus(status) {
+        document.querySelector(".js-status").innerText = `${status}`;
+      }
+      function getChoice(playerMove, computerMove) {
+        document.querySelector(
+          ".js-choice"
+        ).innerText = `You picked ${playerMove}, Computer picked ${computerMove}`;
+      }
+      function reset() {
+        count.player = 0;
+        count.computer = 0;
+        count.draw = 0;
+        localStorage.removeItem("count");
+        localStorage.setItem("count", JSON.stringify(count));
+        getScore();
+      }
+      function computerSelect() {
+        const computerChoice = Math.floor(Math.random() * 3);
+        if (computerChoice === 0) {
+          return "Rock";
+        } else if (computerChoice === 1) {
+          return "Paper";
+        } else {
+          return "Scissors";
+        }
+      }
+      function playGame(playerMove) {
+        const computerMove = computerSelect();
+        let status = "";
+        const result = {
+          Rock: { Scissors: 1, Paper: 0 },
+          Paper: { Rock: 1, Scissors: 0 },
+          Scissors: { Paper: 1, Rock: 0 },
+        };
+        const result2 = result[playerMove]?.[computerMove];
+        if (playerMove === computerMove) {
+          count.draw++;
+          status = "Draw";
+        } else if (result2 === 1) {
+          count.player++;
+          status = "You Win";
+        } else {
+          count.computer++;
+          status = "Computer Win";
+        }
+        localStorage.setItem("count", JSON.stringify(count));
+        getChoice(playerMove, computerMove);
+        getStatus(status);
+        getScore();
+      }
+      getScore();
+    </script>
+  </body>
+</html>
