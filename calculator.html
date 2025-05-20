@@ -33,15 +33,18 @@
 
     .display {
       width: 75%;
-      padding: 15px;
-      font-size: 30px;
+      height: 50px;
+      padding: 5px;
+      font-size: 25px;
       border-radius: 5px;
       border: 1px solid #ccc;
+      background-color: white;
     }
 
     .btn-group {
       justify-content: center;
       margin-top: 25px;
+      background-color: aquamarine;
     }
     .btn-group button {
       width: 70px;
@@ -57,32 +60,31 @@
   </style>
   <body>
     <script>
-      const display = document.querySelector(".display");
-      function number(num) {
-        display.innerText = number;
-      }
+      number = (num) => {
+        document.querySelector(".display").value += num;
+      };
     </script>
 
     <div class="container">
       <h1>Calculator</h1>
-      <input size="10" class="display" maxlength="10" />
+      <input type="text" class="display" disabled />
       <div class="btn-group">
-        <button class="btn1" onclick="number(1);">1</button>
-        <button class="btn2" onclick="">2</button>
-        <button class="btn3" onclick="">3</button>
-        <button class="btn+" onclick="">+</button>
+        <button class="btn1" onclick="number('1')">1</button>
+        <button class="btn2" onclick="number('2')">2</button>
+        <button class="btn3" onclick="number('3')">3</button>
+        <button class="btn+" onclick="number('+')">+</button>
         <br />
-        <button class="btn4" onclick="">4</button>
-        <button class="btn5" onclick="">5</button>
-        <button class="btn6" onclick="">6</button>
-        <button class="btn-" onclick="">-</button>
+        <button class="btn4" onclick="number('4')">4</button>
+        <button class="btn5" onclick="number('5')">5</button>
+        <button class="btn6" onclick="number('6')">6</button>
+        <button class="btn-" onclick="number('-')">-</button>
         <br />
-        <button class="btn7" onclick="">7</button>
-        <button class="btn8" onclick="">8</button>
-        <button class="btn9" onclick="">9</button>
-        <button class="btn*" onclick="">*</button>
+        <button class="btn7" onclick="number('7')">7</button>
+        <button class="btn8" onclick="number('8')">8</button>
+        <button class="btn9" onclick="number('9')">9</button>
+        <button class="btn*" onclick="number('*')">*</button>
         <br />
-        <button class="btn0" onclick="">0</button>
+        <button class="btn0" onclick="number('0')">0</button>
         <button class="btnC" onclick="">C</button>
         <button class="btn=" onclick="">=</button>
         <button class="btn/" onclick="">/</button>
