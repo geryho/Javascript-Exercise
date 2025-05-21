@@ -57,35 +57,92 @@
   </style>
   <body>
     <script>
-      const display = document.querySelector(".display");
-      function number(num) {
-        display.innerText = number;
-      }
+      let currentNumber = 0;
+      let previousNumber = null;
+      let currentOperator = null;
+
+      // Fungsi untuk menambahkan digit ke display
+      const MAX_DIGITS = 10;
+      number = (numb) => {
+        if (String(currentNumber).length >= MAX_DIGITS) return;
+        if (currentOperator === null) {
+          // Mode input angka pertama
+
+          currentNumber = Number(String(currentNumber) + numb);
+        } else {
+          // Mode input angka kedua (reset currentNumber jika baru mulai)
+          if (currentNumber === previousNumber) {
+            currentNumber = Number(numb);
+          } else {
+            currentNumber = Number(String(currentNumber) + numb);
+          }
+        }
+        document.querySelector(".display").value = currentNumber;
+      };
+
+      // Fungsi saat operator ditekan
+      operation = (op) => {
+        previousNumber = currentNumber;
+        currentOperator = op;
+        currentNumber = 0; // Reset currentNumber untuk input angka kedua
+        document.querySelector(".display").value = ""; // Kosongkan display
+      };
+
+      // Fungsi saat tombol sama dengan ditekan
+      calculate = () => {
+        if (previousNumber !== null && currentOperator !== null) {
+          switch (currentOperator) {
+            case "+":
+              currentNumber = previousNumber + currentNumber;
+              break;
+            case "-":
+              currentNumber = previousNumber - currentNumber;
+              break;
+            case "*":
+              currentNumber = previousNumber * currentNumber;
+              break;
+            case "/":
+              currentNumber = previousNumber / currentNumber;
+              break;
+          }
+          document.querySelector(".display").value = currentNumber;
+          previousNumber = null;
+          currentOperator = null;
+        }
+      };
+
+      // Fungsi untuk mereset kalkulator
+      clearDisplay = () => {
+        currentNumber = 0;
+        previousNumber = null;
+        currentOperator = null;
+        document.querySelector(".display").value = "";
+      };
     </script>
 
     <div class="container">
       <h1>Calculator</h1>
-      <input size="10" class="display" maxlength="10" />
+      <input type="text" disabled class="display" maxlength="10" />
       <div class="btn-group">
         <button class="btn1" onclick="number(1);">1</button>
-        <button class="btn2" onclick="">2</button>
-        <button class="btn3" onclick="">3</button>
-        <button class="btn+" onclick="">+</button>
+        <button class="btn2" onclick="number(2);">2</button>
+        <button class="btn3" onclick="number(3);">3</button>
+        <button class="btn+" onclick="operation('+')">+</button>
         <br />
-        <button class="btn4" onclick="">4</button>
-        <button class="btn5" onclick="">5</button>
-        <button class="btn6" onclick="">6</button>
-        <button class="btn-" onclick="">-</button>
+        <button class="btn4" onclick="number(4);">4</button>
+        <button class="btn5" onclick="number(5);">5</button>
+        <button class="btn6" onclick="number(6);">6</button>
+        <button class="btn-" onclick="operation('-')">-</button>
         <br />
-        <button class="btn7" onclick="">7</button>
-        <button class="btn8" onclick="">8</button>
-        <button class="btn9" onclick="">9</button>
-        <button class="btn*" onclick="">*</button>
+        <button class="btn7" onclick="number(7);">7</button>
+        <button class="btn8" onclick="number(8);">8</button>
+        <button class="btn9" onclick="number(9);">9</button>
+        <button class="btn*" onclick="operation('*')">*</button>
         <br />
-        <button class="btn0" onclick="">0</button>
-        <button class="btnC" onclick="">C</button>
-        <button class="btn=" onclick="">=</button>
-        <button class="btn/" onclick="">/</button>
+        <button class="btn0" onclick="number(0);">0</button>
+        <button class="btnC" onclick="clearDisplay()">C</button>
+        <button class="btn=" onclick="calculate()">=</button>
+        <button class="btn/" onclick="operation('/')">/</button>
       </div>
     </div>
   </body>
