@@ -1,149 +1,235 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calculator</title>
+    <title>Kalkulator Anti-Bug</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f5f5f5;
+      }
+      .calculator {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        width: 300px;
+      }
+      .display {
+        width: 100%;
+        height: 60px;
+        margin-bottom: 20px;
+        font-size: 2rem;
+        text-align: right;
+        padding: 10px;
+        box-sizing: border-box;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+      .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+      button {
+        height: 60px;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #f0f0f0;
+        transition: background-color 0.2s;
+      }
+      button:hover {
+        background-color: #e0e0e0;
+      }
+      button.operator {
+        background-color: #4caf50;
+        color: white;
+      }
+      button.operator:hover {
+        background-color: #45a049;
+      }
+      button.equals {
+        background-color: #2196f3;
+        color: white;
+      }
+      button.clear {
+        background-color: #f44336;
+        color: white;
+      }
+      button.decimal {
+        font-weight: bold;
+      }
+    </style>
   </head>
-  <style>
-    body {
-      background-color: #f0f0f0;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 px 4px 8px rgba(0, 0, 0, 0.2);
-      width: 400px;
-      height: 500px;
-      background-color: aqua;
-    }
-    h1 {
-      text-align: center;
-      background-color: rgb(255, 253, 253);
-    }
-
-    .display {
-      width: 75%;
-      padding: 15px;
-      font-size: 30px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    .btn-group {
-      justify-content: center;
-      margin-top: 25px;
-    }
-    .btn-group button {
-      width: 70px;
-      height: 70px;
-      font-size: 20px;
-      margin: 5px;
-      border-radius: 5px;
-      border: none;
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
-    }
-  </style>
   <body>
-    <script>
-      let currentNumber = 0;
-      let previousNumber = null;
-      let currentOperator = null;
-
-      // Fungsi untuk menambahkan digit ke display
-      const MAX_DIGITS = 10;
-      number = (numb) => {
-        if (String(currentNumber).length >= MAX_DIGITS) return;
-        if (currentOperator === null) {
-          // Mode input angka pertama
-
-          currentNumber = Number(String(currentNumber) + numb);
-        } else {
-          // Mode input angka kedua (reset currentNumber jika baru mulai)
-          if (currentNumber === previousNumber) {
-            currentNumber = Number(numb);
-          } else {
-            currentNumber = Number(String(currentNumber) + numb);
-          }
-        }
-        document.querySelector(".display").value = currentNumber;
-      };
-
-      // Fungsi saat operator ditekan
-      operation = (op) => {
-        previousNumber = currentNumber;
-        currentOperator = op;
-        currentNumber = 0; // Reset currentNumber untuk input angka kedua
-        document.querySelector(".display").value = ""; // Kosongkan display
-      };
-
-      // Fungsi saat tombol sama dengan ditekan
-      calculate = () => {
-        if (previousNumber !== null && currentOperator !== null) {
-          switch (currentOperator) {
-            case "+":
-              currentNumber = previousNumber + currentNumber;
-              break;
-            case "-":
-              currentNumber = previousNumber - currentNumber;
-              break;
-            case "*":
-              currentNumber = previousNumber * currentNumber;
-              break;
-            case "/":
-              currentNumber = previousNumber / currentNumber;
-              break;
-          }
-          document.querySelector(".display").value = currentNumber;
-          previousNumber = null;
-          currentOperator = null;
-        }
-      };
-
-      // Fungsi untuk mereset kalkulator
-      clearDisplay = () => {
-        currentNumber = 0;
-        previousNumber = null;
-        currentOperator = null;
-        document.querySelector(".display").value = "";
-      };
-    </script>
-
-    <div class="container">
-      <h1>Calculator</h1>
-      <input type="text" disabled class="display" maxlength="10" />
-      <div class="btn-group">
-        <button class="btn1" onclick="number(1);">1</button>
-        <button class="btn2" onclick="number(2);">2</button>
-        <button class="btn3" onclick="number(3);">3</button>
-        <button class="btn+" onclick="operation('+')">+</button>
-        <br />
-        <button class="btn4" onclick="number(4);">4</button>
-        <button class="btn5" onclick="number(5);">5</button>
-        <button class="btn6" onclick="number(6);">6</button>
-        <button class="btn-" onclick="operation('-')">-</button>
-        <br />
-        <button class="btn7" onclick="number(7);">7</button>
-        <button class="btn8" onclick="number(8);">8</button>
-        <button class="btn9" onclick="number(9);">9</button>
-        <button class="btn*" onclick="operation('*')">*</button>
-        <br />
-        <button class="btn0" onclick="number(0);">0</button>
-        <button class="btnC" onclick="clearDisplay()">C</button>
-        <button class="btn=" onclick="calculate()">=</button>
-        <button class="btn/" onclick="operation('/')">/</button>
+    <div class="calculator">
+      <input type="text" class="display" value="0" disabled />
+      <div class="buttons">
+        <button onclick="clearDisplay()" class="clear">C</button>
+        <button onclick="appendOperator('/')" class="operator">/</button>
+        <button onclick="appendOperator('*')" class="operator">×</button>
+        <button onclick="backspace()">⌫</button>
+        <button onclick="appendNumber('7')">7</button>
+        <button onclick="appendNumber('8')">8</button>
+        <button onclick="appendNumber('9')">9</button>
+        <button onclick="appendOperator('-')" class="operator">-</button>
+        <button onclick="appendNumber('4')">4</button>
+        <button onclick="appendNumber('5')">5</button>
+        <button onclick="appendNumber('6')">6</button>
+        <button onclick="appendOperator('+')" class="operator">+</button>
+        <button onclick="appendNumber('1')">1</button>
+        <button onclick="appendNumber('2')">2</button>
+        <button onclick="appendNumber('3')">3</button>
+        <button onclick="calculate()" class="equals" rowspan="2">=</button>
+        <button onclick="appendNumber('0')" colspan="2">0</button>
+        <button onclick="appendDecimal()" class="decimal">.</button>
       </div>
     </div>
+
+    <script>
+      // State kalkulator
+      let currentInput = "0";
+      let firstOperand = null;
+      let operator = null;
+      let waitingForSecondOperand = false;
+      const MAX_DIGITS = 12;
+      const display = document.querySelector(".display");
+
+      // Update tampilan
+      function updateDisplay() {
+        display.value = currentInput;
+      }
+      /*     function performCalculation(n1, n2, op) {
+        switch (op) {
+          case "+":
+            return n1 + n2;
+          case "-":
+            return n1 - n2;
+          case "*":
+            return n1 * n2;
+          case "/":
+            if (n2 === 0) {
+              alert("Tidak bisa membagi dengan nol!");
+              return NaN;
+            }
+            return n1 / n2;
+          default:
+            return NaN;
+        }
+      }*/
+
+      // Masukkan angka
+      function appendNumber(number) {
+        if (currentInput.length >= MAX_DIGITS) return;
+
+        if (waitingForSecondOperand) {
+          currentInput = number;
+          waitingForSecondOperand = false;
+        } else {
+          currentInput = currentInput === "0" ? number : currentInput + number;
+        }
+
+        updateDisplay();
+      }
+
+      // Masukkan desimal
+      function appendDecimal() {
+        if (waitingForSecondOperand) {
+          currentInput = "0.";
+          waitingForSecondOperand = false;
+          updateDisplay();
+          return;
+        }
+
+        if (!currentInput.includes(".")) {
+          currentInput += ".";
+          updateDisplay();
+        }
+      }
+
+      // Masukkan operator
+      function appendOperator(nextOperator) {
+        const inputValue = parseFloat(currentInput);
+
+        if (firstOperand === null) {
+          firstOperand = inputValue;
+        } else if (operator) {
+          const result = calculate(firstOperand, inputValue, operator);
+          currentInput = String(result);
+          firstOperand = result;
+          updateDisplay();
+        }
+
+        waitingForSecondOperand = true;
+        operator = nextOperator;
+      }
+
+      // Hitung hasil
+      function calculate() {
+        if (firstOperand === null || operator === null) return;
+
+        const inputValue = parseFloat(currentInput);
+        let result;
+
+        switch (operator) {
+          case "+":
+            result = firstOperand + inputValue;
+            break;
+          case "-":
+            result = firstOperand - inputValue;
+            break;
+          case "*":
+            result = firstOperand * inputValue;
+            break;
+          case "/":
+            if (inputValue === 0) {
+              alert("Tidak bisa membagi dengan nol!");
+              clearDisplay();
+              return;
+            }
+            result = firstOperand / inputValue;
+            break;
+          default:
+            return;
+        }
+
+        // Batasi jumlah digit
+        result = parseFloat(result.toFixed(10));
+
+        currentInput = String(result);
+        firstOperand = null;
+        operator = null;
+        waitingForSecondOperand = true;
+        updateDisplay();
+      }
+
+      // Hapus semua
+      function clearDisplay() {
+        currentInput = "0";
+        firstOperand = null;
+        operator = null;
+        waitingForSecondOperand = false;
+        updateDisplay();
+      }
+
+      // Hapus satu karakter
+      function backspace() {
+        if (currentInput.length === 1) {
+          currentInput = "0";
+        } else {
+          currentInput = currentInput.slice(0, -1);
+        }
+        updateDisplay();
+      }
+    </script>
   </body>
 </html>
