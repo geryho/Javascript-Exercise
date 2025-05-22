@@ -89,7 +89,7 @@
         <button onclick="appendNumber('1')">1</button>
         <button onclick="appendNumber('2')">2</button>
         <button onclick="appendNumber('3')">3</button>
-        <button onclick="calculate()" class="equals" rowspan="2">=</button>
+        <button onclick="handleEquals()" class="equals" rowspan="2">=</button>
         <button onclick="appendNumber('0')" colspan="2">0</button>
         <button onclick="appendDecimal()" class="decimal">.</button>
       </div>
@@ -108,33 +108,19 @@
       function updateDisplay() {
         display.value = currentInput;
       }
-      /*     function performCalculation(n1, n2, op) {
-        switch (op) {
-          case "+":
-            return n1 + n2;
-          case "-":
-            return n1 - n2;
-          case "*":
-            return n1 * n2;
-          case "/":
-            if (n2 === 0) {
-              alert("Tidak bisa membagi dengan nol!");
-              return NaN;
-            }
-            return n1 / n2;
-          default:
-            return NaN;
-        }
-      }*/
 
       // Masukkan angka
+      //pemeriksaan maksimal panjang digit
       function appendNumber(number) {
         if (currentInput.length >= MAX_DIGITS) return;
 
+        //logika penambahan angka kedua
         if (waitingForSecondOperand) {
           currentInput = number;
           waitingForSecondOperand = false;
         } else {
+          //ternary operator untuk mengecek apakah input saat ini adalah 0
+          //jika iya, maka ganti dengan angka baru
           currentInput = currentInput === "0" ? number : currentInput + number;
         }
 
@@ -149,7 +135,8 @@
           updateDisplay();
           return;
         }
-
+        //mengecek apakah input saat ini sudah ada desimal
+        //jika belum ada, maka tambahkan desimal
         if (!currentInput.includes(".")) {
           currentInput += ".";
           updateDisplay();
@@ -158,60 +145,74 @@
 
       // Masukkan operator
       function appendOperator(nextOperator) {
-        const inputValue = parseFloat(currentInput);
+        const inputValue = parseFloat(currentInput || "0"); // Default to 0 if empty
+        // Handle consecutive operator presses
+        if (operator && waitingForSecondOperand) {
+          operator = nextOperator; // Just update the operator
+          return; // Exit early
+        }
 
         if (firstOperand === null) {
           firstOperand = inputValue;
         } else if (operator) {
           const result = calculate(firstOperand, inputValue, operator);
-          currentInput = String(result);
-          firstOperand = result;
-          updateDisplay();
-        }
 
+          if (!isNaN(result)) {
+            currentInput = String(result);
+            firstOperand = result; // Store the result as the first operand for the next operation
+            updateDisplay();
+          }
+        }
         waitingForSecondOperand = true;
         operator = nextOperator;
       }
 
       // Hitung hasil
-      function calculate() {
-        if (firstOperand === null || operator === null) return;
+      function calculate(first, second, operator) {
+        if (first === null || operator === null) return NaN;
 
-        const inputValue = parseFloat(currentInput);
         let result;
 
         switch (operator) {
           case "+":
-            result = firstOperand + inputValue;
+            result = first + second;
             break;
           case "-":
-            result = firstOperand - inputValue;
+            result = first - second;
             break;
           case "*":
-            result = firstOperand * inputValue;
+            result = first * second;
             break;
           case "/":
-            if (inputValue === 0) {
+            if (second === 0) {
               alert("Tidak bisa membagi dengan nol!");
-              clearDisplay();
-              return;
+              return NaN;
             }
-            result = firstOperand / inputValue;
+            result = first / second;
             break;
           default:
-            return;
+            return NaN;
         }
 
         // Batasi jumlah digit
-        result = parseFloat(result.toFixed(10));
-
-        currentInput = String(result);
-        firstOperand = null;
-        operator = null;
-        waitingForSecondOperand = true;
-        updateDisplay();
+        return parseFloat(result.toFixed(10));
       }
 
+      //fungsi untuk mengeksekusi perhitungan saat tombol "=" ditekan
+      function handleEquals() {
+        if (operator === null || waitingForSecondOperand) return;
+
+        const inputValue = parseFloat(currentInput);
+        const result = calculate(firstOperand, inputValue, operator);
+
+        if (!isNaN(result)) {
+          currentInput = String(result);
+          firstOperand = result; // Store the result as the first operand for the next operation
+          operator = null;
+          waitingForSecondOperand = true;
+          updateDisplay();
+        }
+      }
       // Hapus semua
       function clearDisplay() {
         currentInput = "0";
