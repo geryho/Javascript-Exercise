@@ -23,24 +23,37 @@
         border-radius: 50%;
         height: 120px;
         width: 120px;
+        margin-right: 20px;
+      }
+      .win-lose {
+        font-size: 25px;
+        font-weight: bold;
+        margin-top: 50px;
+      }
+      .reset-score {
+        background-color: white;
+        border: none;
+        font-size: 15px;
+        padding: 8px 15px;
+        cursor: pointer;
       }
     </style>
   </head>
   <body>
     <h1 class="title">Rock Paper Scissors</h1>
-    <button onclick="playGame('Rock');" class="move-button">
+    <button onclick="playGame('rock');" class="move-button">
       <img src="img/rock-emoji.png" class="move-icon" />
     </button>
-    <button onclick="playGame('Paper');" class="move-button">
+    <button onclick="playGame('paper');" class="move-button">
       <img src="img/paper-emoji.png" class="move-icon" />
     </button>
-    <button onclick="playGame('Scissors');" class="move-button">
+    <button onclick="playGame('scissors');" class="move-button">
       <img src="img/scissors-emoji.png" class="move-icon" />
     </button>
     <p class="js-choice"></p>
-    <p class="js-status"></p>
+    <p class="js-status win-lose"></p>
     <p class="js-score"></p>
-    <button onclick="reset();" class="Reset">Reset</button>
+    <button onclick="reset();" class="Reset reset-score">Reset Score</button>
 
     <script>
       const count = JSON.parse(localStorage.getItem("count")) || {
@@ -59,7 +72,7 @@
       function getChoice(playerMove, computerMove) {
         document.querySelector(
           ".js-choice"
-        ).innerText = `You picked ${playerMove}, Computer picked ${computerMove}`;
+        ).innerHTML = `You picked <img src="img/${playerMove}-emoji.png" class="move-icon">, Computer picked <img src="img/${computerMove}-emoji.png" class="move-icon">`;
       }
       function reset() {
         count.player = 0;
@@ -72,20 +85,20 @@
       function computerSelect() {
         const computerChoice = Math.floor(Math.random() * 3);
         if (computerChoice === 0) {
-          return "Rock";
+          return "rock";
         } else if (computerChoice === 1) {
-          return "Paper";
+          return "paper";
         } else {
-          return "Scissors";
+          return "scissors";
         }
       }
       function playGame(playerMove) {
         const computerMove = computerSelect();
         let status = "";
         const result = {
-          Rock: { Scissors: 1, Paper: 0 },
-          Paper: { Rock: 1, Scissors: 0 },
-          Scissors: { Paper: 1, Rock: 0 },
+          rock: { scissors: 1, paper: 0 },
+          paper: { rock: 1, scissors: 0 },
+          scissors: { paper: 1, rock: 0 },
         };
         const result2 = result[playerMove]?.[computerMove];
         if (playerMove === computerMove) {
