@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Closure</title>
+  </head>
+  <body>
+    <script>
+      function greeting(time) {
+        console.log(`hello ${time}`);
+        function name(name) {
+          console.log(`hello, selamat ${time} ${name}`);
+        }
+        return name;
+      }
+
+      const selamatPagi = greeting("pagi");
+      const selamatSiang = greeting("siang");
+      const selamatMalam = greeting("malam");
+      selamatPagi("Budi");
+    </script>
+  </body>
+</html>
