@@ -13,9 +13,17 @@
       greeting();
 
       const num = 2;
-      const function1 = function greeting() {
+      const function1 = function () {
         console.log(`hello2`);
       };
+
+      const object1 = {
+        num: 2,
+        fun: function greeting() {
+          console.log("hello3");
+        },
+      };
+      object1.fun();
     </script>
   </body>
 </html>
