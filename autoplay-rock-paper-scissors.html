@@ -30,10 +30,9 @@
         font-weight: bold;
         margin-top: 50px;
       }
-      .reset-score-button,
-      .autoplay-button {
+      .reset-score,
+      .auto-play-button {
         background-color: white;
-        font-weight: bold;
         border: none;
         font-size: 15px;
         padding: 8px 15px;
@@ -55,9 +54,8 @@
     <p class="js-choice"></p>
     <p class="js-status win-lose"></p>
     <p class="js-score"></p>
-    <button onclick="reset();" class="reset-score-button">Reset Score</button>
-    <button onclick="autoPlay()" class="autoplay-button">Autoplay</button>
-
+    <button onclick="reset();" class="Reset reset-score">Reset Score</button>
+    <button onclick="autoPlay();" class="auto-play-button">Auto Play</button>
     <script>
       const count = JSON.parse(localStorage.getItem("count")) || {
         player: 0,
@@ -85,6 +83,21 @@
         localStorage.setItem("count", JSON.stringify(count));
         getScore();
       }
+
+      let isAutoPlay = false;
+      let intervalId;
+      function autoPlay() {
+        if (!isAutoPlay) {
+          intervalId = setInterval(function autoPlay() {
+            playerMove = computerSelect();
+            playGame(playerMove);
+          }, 1000);
+          isAutoPlay = true;
+        } else {
+          clearInterval(intervalId);
+          isAutoPlay = false;
+        }
+      }
       function computerSelect() {
         const computerChoice = Math.floor(Math.random() * 3);
         if (computerChoice === 0) {
@@ -93,22 +106,6 @@
           return "paper";
         } else {
           return "scissors";
-        }
-      }
-
-      let isAutoPlaying = false;
-      let intervalId;
-
-      function autoPlay() {
-        if (!isAutoPlaying) {
-          intervalId = setInterval(function () {
-            const playerMove = computerSelect();
-            playGame(playerMove);
-          }, 1000);
-          isAutoPlaying = true;
-        } else {
-          clearInterval(intervalId);
-          isAutoPlaying = false;
         }
       }
       function playGame(playerMove) {
