@@ -6,16 +6,19 @@
     <title>Amazon Shipping Calculator</title>
   </head>
   <body>
-    <p>Amazon Shipping Calculator</p>
+    <h3>Amazon Shipping Calculator</h3>
     <p class="orderUnder40"></p>
     <p class="orderOver40"></p>
-    <input
-      placeholder="Cost of order"
-      class="js-cost-input"
-      onkeydown="handleCost(event)"
-    />
-    <button onclick="calculateTotal();" class="calculate">Calculate</button>
-    <p class="js-total-cost"></p>
+    <form>
+      <input
+        type="number"
+        placeholder="Cost of order"
+        class="js-cost-input"
+        onkeydown="handleCost(event)"
+      />
+      <button onclick="calculateTotal();" class="calculate">Calculate</button>
+      <p class="js-total-cost"></p>
+    </form>
     <script>
       window.document;
       function handleCost(event) {
