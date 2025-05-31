@@ -21,10 +21,39 @@
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         width: 300px;
       }
-      .display {
+      /*  .display {
         width: 100%;
         height: 60px;
         margin-bottom: 20px;
+        font-size: 2rem;
+        text-align: right;
+        padding: 10px;
+        box-sizing: border-box;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }*/
+      .display-container {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+      }
+      .operation-display {
+        height: 25px;
+        font-size: 1rem;
+        color: #666;
+        text-align: right;
+        padding: 5px 10px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .result-display {
+        width: 100%;
+        height: 60px;
         font-size: 2rem;
         text-align: right;
         padding: 10px;
@@ -72,7 +101,16 @@
   </head>
   <body>
     <div class="calculator">
-      <input type="text" class="display" value="0" disabled />
+      <div class="display-container">
+        <div class="operation-display" id="operationDisplay"></div>
+        <input
+          type="text"
+          class="result-display"
+          value="0"
+          disabled
+          id="resultDisplay"
+        />
+      </div>
       <div class="buttons">
         <button onclick="clearDisplay()" class="clear">C</button>
         <button onclick="appendOperator('/')" class="operator">/</button>
@@ -102,11 +140,22 @@
       let operator = null;
       let waitingForSecondOperand = false;
       const MAX_DIGITS = 12;
-      const display = document.querySelector(".display");
-
+      const resultDisplay = document.getElementById("resultDisplay");
+      const operationDisplay = document.getElementById("operationDisplay");
       // Update tampilan
       function updateDisplay() {
-        display.value = currentInput;
+        resultDisplay.value = currentInput;
+
+        // Update tampilan operasi
+        if (operator && firstOperand !== null) {
+          if (waitingForSecondOperand) {
+            operationDisplay.textContent = `${firstOperand} ${operator}`;
+          } else {
+            operationDisplay.textContent = `${firstOperand} ${operator} ${currentInput}`;
+          }
+        } else {
+          operationDisplay.textContent = "";
+        }
       }
 
       // Masukkan angka
@@ -123,7 +172,6 @@
           //jika iya, maka ganti dengan angka baru
           currentInput = currentInput === "0" ? number : currentInput + number;
         }
-
         updateDisplay();
       }
 
@@ -149,22 +197,25 @@
         // Handle consecutive operator presses
         if (operator && waitingForSecondOperand) {
           operator = nextOperator; // Just update the operator
+          updateDisplay();
           return; // Exit early
         }
 
         if (firstOperand === null) {
           firstOperand = inputValue;
         } else if (operator) {
+          secondOperand = inputValue;
           const result = calculate(firstOperand, inputValue, operator);
 
           if (!isNaN(result)) {
             currentInput = String(result);
             firstOperand = result; // Store the result as the first operand for the next operation
-            updateDisplay();
+            secondOperand = null;
           }
         }
         waitingForSecondOperand = true;
         operator = nextOperator;
+        updateDisplay();
       }
 
       // Hitung hasil
@@ -172,7 +223,6 @@
         if (first === null || operator === null) return NaN;
 
         let result;
-
         switch (operator) {
           case "+":
             result = first + second;
@@ -193,7 +243,6 @@
           default:
             return NaN;
         }
-
         // Batasi jumlah digit
         return parseFloat(result.toFixed(10));
       }
@@ -202,10 +251,14 @@
       function handleEquals() {
         if (operator === null || waitingForSecondOperand) return;
 
-        const inputValue = parseFloat(currentInput);
-        const result = calculate(firstOperand, inputValue, operator);
+        const secondOperand = parseFloat(currentInput);
+        const result = calculate(firstOperand, secondOperand, operator);
 
         if (!isNaN(result)) {
+          // Tampilkan operasi lengkap di atas
+          operationDisplay.textContent = `${firstOperand} ${operator} ${secondOperand} =`;
+
+          // Tampilkan hasil di display utama
           currentInput = String(result);
           firstOperand = result; // Store the result as the first operand for the next operation
           operator = null;
