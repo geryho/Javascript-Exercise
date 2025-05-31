@@ -135,152 +135,122 @@
 
     <script>
       // State kalkulator
-      let currentInput = "0";
-      let firstOperand = null;
-      let operator = null;
-      let waitingForSecondOperand = false;
-      const MAX_DIGITS = 12;
+      let currentDisplay = "0";
+      let calculationHistory = "";
+      let lastResult = null;
+      const MAX_DIGITS = 12; // Maksimum 12 digit (termasuk desimal)
       const resultDisplay = document.getElementById("resultDisplay");
       const operationDisplay = document.getElementById("operationDisplay");
       // Update tampilan
       function updateDisplay() {
-        resultDisplay.value = currentInput;
-
-        // Update tampilan operasi
-        if (operator && firstOperand !== null) {
-          if (waitingForSecondOperand) {
-            operationDisplay.textContent = `${firstOperand} ${operator}`;
-          } else {
-            operationDisplay.textContent = `${firstOperand} ${operator} ${currentInput}`;
-          }
-        } else {
-          operationDisplay.textContent = "";
-        }
+        resultDisplay.value = currentDisplay;
+        operationDisplay.textContent = calculationHistory;
       }
 
-      // Masukkan angka
-      //pemeriksaan maksimal panjang digit
       function appendNumber(number) {
-        if (currentInput.length >= MAX_DIGITS) return;
-
-        //logika penambahan angka kedua
-        if (waitingForSecondOperand) {
-          currentInput = number;
-          waitingForSecondOperand = false;
+        // Masukkan angka
+        //pemeriksaan maksimal panjang digit
+        // Hitung jumlah digit saat ini (abaikan operator dan desimal)
+        const currentDigits = currentDisplay.replace(/[^\d]/g, "").length;
+        if (currentDigits >= MAX_DIGITS) return;
+        if (currentDisplay === "0" || lastResult !== null) {
+          currentDisplay = number;
+          lastResult = null;
         } else {
-          //ternary operator untuk mengecek apakah input saat ini adalah 0
-          //jika iya, maka ganti dengan angka baru
-          currentInput = currentInput === "0" ? number : currentInput + number;
+          currentDisplay += number;
         }
+        calculationHistory = "";
         updateDisplay();
       }
 
       // Masukkan desimal
       function appendDecimal() {
-        if (waitingForSecondOperand) {
-          currentInput = "0.";
-          waitingForSecondOperand = false;
-          updateDisplay();
-          return;
-        }
-        //mengecek apakah input saat ini sudah ada desimal
-        //jika belum ada, maka tambahkan desimal
-        if (!currentInput.includes(".")) {
-          currentInput += ".";
-          updateDisplay();
-        }
-      }
+        const parts = currentDisplay.split(/[\+\-\*\/]/);
+        const lastNumber = parts[parts.length - 1];
+        if (lastNumber.includes(".")) return;
 
-      // Masukkan operator
-      function appendOperator(nextOperator) {
-        const inputValue = parseFloat(currentInput || "0"); // Default to 0 if empty
-        // Handle consecutive operator presses
-        if (operator && waitingForSecondOperand) {
-          operator = nextOperator; // Just update the operator
-          updateDisplay();
-          return; // Exit early
+        if (lastResult !== null) {
+          currentDisplay = "0.";
+          lastResult = null;
+        } else if (/[\+\-\*\/]$/.test(currentDisplay)) {
+          currentDisplay += "0.";
+        } else {
+          currentDisplay += ".";
         }
-
-        if (firstOperand === null) {
-          firstOperand = inputValue;
-        } else if (operator) {
-          secondOperand = inputValue;
-          const result = calculate(firstOperand, inputValue, operator);
-
-          if (!isNaN(result)) {
-            currentInput = String(result);
-            firstOperand = result; // Store the result as the first operand for the next operation
-            secondOperand = null;
-          }
-        }
-        waitingForSecondOperand = true;
-        operator = nextOperator;
+        calculationHistory = "";
         updateDisplay();
       }
 
-      // Hitung hasil
-      function calculate(first, second, operator) {
-        if (first === null || operator === null) return NaN;
+      // Masukkan operator
+      function appendOperator(op) {
+        if (currentDisplay.slice(-1) === op) return;
 
-        let result;
-        switch (operator) {
-          case "+":
-            result = first + second;
-            break;
-          case "-":
-            result = first - second;
-            break;
-          case "*":
-            result = first * second;
-            break;
-          case "/":
-            if (second === 0) {
-              alert("Tidak bisa membagi dengan nol!");
-              return NaN;
-            }
-            result = first / second;
-            break;
-          default:
-            return NaN;
+        if (/[\+\-\*\/]$/.test(currentDisplay)) {
+          currentDisplay = currentDisplay.slice(0, -1) + op;
+        } else if (lastResult !== null) {
+          currentDisplay = lastResult + op;
+          lastResult = null;
+        } else {
+          currentDisplay += op;
         }
-        // Batasi jumlah digit
-        return parseFloat(result.toFixed(10));
+        calculationHistory = "";
+        updateDisplay();
       }
-
       //fungsi untuk mengeksekusi perhitungan saat tombol "=" ditekan
       function handleEquals() {
-        if (operator === null || waitingForSecondOperand) return;
+        if (/[\+\-\*\/]$/.test(currentDisplay)) return;
 
-        const secondOperand = parseFloat(currentInput);
-        const result = calculate(firstOperand, secondOperand, operator);
+        try {
+          calculationHistory = currentDisplay;
+          const result = eval(currentDisplay);
 
-        if (!isNaN(result)) {
-          // Tampilkan operasi lengkap di atas
-          operationDisplay.textContent = `${firstOperand} ${operator} ${secondOperand} =`;
+          // Format hasil dengan maksimum 12 digit
+          let formattedResult;
+          if (Number.isInteger(result)) {
+            formattedResult = result.toString();
+            if (formattedResult.length > MAX_DIGITS) {
+              formattedResult = parseFloat(
+                result.toExponential(MAX_DIGITS - 4)
+              ).toString();
+            }
+          } else {
+            // Untuk desimal, hitung digit sebelum dan sesudah titik
+            const [integerPart, decimalPart] = result.toString().split(".");
+            const totalDigits =
+              integerPart.length + (decimalPart ? decimalPart.length : 0);
 
-          // Tampilkan hasil di display utama
-          currentInput = String(result);
-          firstOperand = result; // Store the result as the first operand for the next operation
-          operator = null;
-          waitingForSecondOperand = true;
+            if (totalDigits > MAX_DIGITS) {
+              // Jika melebihi, gunakan notasi ilmiah
+              formattedResult = parseFloat(
+                result.toExponential(MAX_DIGITS - 4)
+              ).toString();
+            } else {
+              formattedResult = result.toString();
+            }
+          }
+          lastResult = formattedResult;
+          currentDisplay = formattedResult;
+          updateDisplay();
+        } catch (e) {
+          currentDisplay = "Error";
           updateDisplay();
         }
       }
+
       // Hapus semua
       function clearDisplay() {
-        currentInput = "0";
-        firstOperand = null;
-        operator = null;
-        waitingForSecondOperand = false;
+        currentDisplay = "0";
+        calculationHistory = "";
+        lastResult = null;
         updateDisplay();
       }
 
       // Hapus satu karakter
       function backspace() {
-        if (currentInput.length === 1) {
-          currentInput = "0";
+        if (currentDisplay.length === 1) {
+          currentDisplay = "0";
         } else {
-          currentInput = currentInput.slice(0, -1);
+          currentDisplay = currentDisplay.slice(0, -1);
         }
         updateDisplay();
       }
