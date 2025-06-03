@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Juragan Angkot</title>
+  </head>
+  <body>
+    <script>
+      let penumpang = ["BUDI", undefined, "GERRY"];
+      function tambahPenumpang(nama, penumpang) {
+        if (penumpang.length === 0) {
+          // Jika angkot kosong
+          penumpang.push(nama);
+          console.log(`Penumpang ${nama} sudah didalam angkot`);
+          return penumpang;
+        } else {
+          for (let i = 0; i < penumpang.length; i++) {
+            // Jika sudah ada penumpang dengan nama yang sama
+            if (penumpang[i] == undefined) {
+              penumpang[i] = nama;
+              console.log(`Penumpang ${nama} sudah didalam angkot`);
+              return penumpang;
+            } else if (i === penumpang.length - 1) {
+              penumpang.push(nama);
+              console.log(`Penumpang ${nama} sudah didalam angkot`);
+              return penumpang;
+            }
+          }
+        }
+      }
+      tambahPenumpang("Budi", penumpang);
+      tambahPenumpang("Angel", penumpang);
+      tambahPenumpang("Chloe", penumpang);
+      console.log(penumpang);
+    </script>
+  </body>
+</html>
