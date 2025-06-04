@@ -3,35 +3,43 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Juragan Angkot</title>
+    <title>Juragan Angkot (Immutable)</title>
   </head>
   <body>
     <script>
       let penumpang = ["BUDI", undefined, "GERRY"];
-      function tambahPenumpang(nama, penumpang) {
-        if (penumpang.length === 0) {
-          // Jika angkot kosong
-          penumpang.push(nama);
-          console.log(`Penumpang ${nama} sudah didalam angkot`);
-          //return penumpang;
-        } else {
-          for (let i = 0; i < penumpang.length; i++) {
-            // Jika sudah ada penumpang dengan nama yang sama
-            if (penumpang[i] == undefined) {
-              penumpang[i] = nama;
-              console.log(`Penumpang ${nama} sudah didalam angkot`);
-              return penumpang;
-            } else if (i === penumpang.length - 1) {
-              penumpang.push(nama);
-              console.log(`Penumpang ${nama} sudah didalam angkot`);
-              return penumpang;
-            }
+
+      function tambahPenumpang(nama, daftarPenumpang) {
+        // Buat salinan array untuk diubah (hindari mutasi langsung)
+        const newDaftar = [...daftarPenumpang];
+
+        if (newDaftar.length === 0) {
+          // Jika angkot kosong, tambahkan penumpang ke array baru
+          return [nama];
+        }
+
+        let isAdded = false;
+        for (let i = 0; i < newDaftar.length; i++) {
+          if (newDaftar[i] === undefined) {
+            // Isi tempat kosong dengan nama (buat array baru)
+            const updatedDaftar = [...newDaftar];
+            updatedDaftar[i] = nama;
+            console.log(`Penumpang ${nama} sudah didalam angkot`);
+            return updatedDaftar;
           }
         }
+
+        // Jika tidak ada tempat kosong, tambahkan ke akhir array baru
+        console.log(`Penumpang ${nama} sudah didalam angkot`);
+        return [...newDaftar, nama];
       }
-      tambahPenumpang("Angel", penumpang);
-      tambahPenumpang("Chloe", penumpang);
+
+      // Panggil fungsi dengan assignment (karena return array baru)
+      penumpang = tambahPenumpang("Angel", penumpang);
+      penumpang = tambahPenumpang("Chloe", penumpang);
+
       console.log(penumpang);
+      // Output: ["BUDI", "Angel", "GERRY", "Chloe"]
     </script>
   </body>
 </html>
