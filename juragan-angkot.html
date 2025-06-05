@@ -8,35 +8,38 @@
   <body>
     <script>
       let penumpang = ["BUDI", undefined, "GERRY"];
-
+      //immutable function to add passengers
       function tambahPenumpang(nama, daftarPenumpang) {
         // Buat salinan array untuk diubah (hindari mutasi langsung)
         const newDaftar = [...daftarPenumpang];
-
         if (newDaftar.length === 0) {
           // Jika angkot kosong, tambahkan penumpang ke array baru
           return [nama];
         }
-
-        let isAdded = false;
         for (let i = 0; i < newDaftar.length; i++) {
+          if (newDaftar[i] == nama) {
+            // Jika penumpang sudah ada, tidak perlu ditambahkan lagi
+            console.log(`Penumpang ${nama} sudah didalam angkot`);
+            return newDaftar;
+          }
           if (newDaftar[i] === undefined) {
             // Isi tempat kosong dengan nama (buat array baru)
             const updatedDaftar = [...newDaftar];
             updatedDaftar[i] = nama;
-            console.log(`Penumpang ${nama} sudah didalam angkot`);
+            console.log(`Penumpang ${nama} didalam angkot`);
             return updatedDaftar;
           }
         }
-
         // Jika tidak ada tempat kosong, tambahkan ke akhir array baru
-        console.log(`Penumpang ${nama} sudah didalam angkot`);
+        console.log(`Penumpang ${nama} didalam angkot`);
         return [...newDaftar, nama];
       }
 
       // Panggil fungsi dengan assignment (karena return array baru)
       penumpang = tambahPenumpang("Angel", penumpang);
       penumpang = tambahPenumpang("Chloe", penumpang);
+      penumpang = tambahPenumpang("BUDI", penumpang);
+      penumpang = tambahPenumpang("budi", penumpang);
 
       console.log(penumpang);
       // Output: ["BUDI", "Angel", "GERRY", "Chloe"]
