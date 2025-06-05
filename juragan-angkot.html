@@ -35,14 +35,37 @@
         return [...newDaftar, nama];
       }
 
+      function hapusPenumpang(nama, daftarPenumpang) {
+        const newDaftar = [...daftarPenumpang];
+        if (newDaftar.length === 0) {
+          console.log("Angkot masih kosong");
+          return newDaftar;
+        } else {
+          for (let i = 0; i < newDaftar.length; i++) {
+            if (newDaftar[i] === nama) {
+              newDaftar[i] = undefined;
+              console.log(`Penumpang ${nama} turun dari Angkot`);
+              return newDaftar;
+            } else if (i === newDaftar.length - 1) {
+              console.log(`tidak ada penumpang nama ${nama} di Angkot!`);
+              return newDaftar;
+            }
+          }
+        }
+      }
+
       // Panggil fungsi dengan assignment (karena return array baru)
       penumpang = tambahPenumpang("Angel", penumpang);
       penumpang = tambahPenumpang("Chloe", penumpang);
       penumpang = tambahPenumpang("BUDI", penumpang);
       penumpang = tambahPenumpang("budi", penumpang);
-
+      penumpang = hapusPenumpang("budi", penumpang);
+      penumpang = hapusPenumpang("liani", penumpang);
+      penumpang = hapusPenumpang("GERRY", penumpang);
+      penumpang = tambahPenumpang("Acong", penumpang);
+      penumpang = tambahPenumpang("liani", penumpang);
+      penumpang = hapusPenumpang("BUDI", penumpang);
       console.log(penumpang);
-      // Output: ["BUDI", "Angel", "GERRY", "Chloe"]
     </script>
   </body>
 </html>
