@@ -177,21 +177,24 @@
 
       // Masukkan operator
       function appendOperator(op) {
+        // Ubah '*' menjadi '×' untuk display
+        const displayOp = op === "*" ? "×" : op;
+
         // Cek jika operator sama sudah ada
-        if (currentDisplay.slice(-1) === op) return;
+        if (currentDisplay.slice(-1) === displayOp) return;
 
         // Ganti operator terakhir jika ada
-        if (/[\+\-\*\/]$/.test(currentDisplay)) {
-          currentDisplay = currentDisplay.slice(0, -1) + op;
+        if (/[\+\-\*\/x]$/.test(currentDisplay)) {
+          currentDisplay = currentDisplay.slice(0, -1) + displayOp;
         }
         // Gunakan hasil sebelumnya sebagai operand pertama
         else if (lastResult !== null) {
-          currentDisplay = lastResult + op;
+          currentDisplay = lastResult + displayOp;
           lastResult = null;
         }
         // Tambahkan operator baru
         else {
-          currentDisplay += op;
+          currentDisplay += displayOp;
         }
         calculationHistory = "";
         updateDisplay();
@@ -199,11 +202,13 @@
       //fungsi untuk mengeksekusi perhitungan saat tombol "=" ditekan
       function handleEquals() {
         // Validasi jika akhir input adalah operator
-        if (/[\+\-\*\/]$/.test(currentDisplay)) return;
+        if (/[\+\-\*\/x]$/.test(currentDisplay)) return;
 
         try {
+          // Ganti '×' kembali ke '*' untuk perhitungan
+          const calculationString = currentDisplay.replace(/×/g, "*");
           calculationHistory = currentDisplay; // Simpan operasi ke riwayat
-          const result = eval(currentDisplay); // Hitung hasil
+          const result = eval(calculationString); // Hitung hasil
 
           // Format hasil dengan maksimum 12 digit
           let formattedResult;
